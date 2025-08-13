@@ -44,6 +44,7 @@ export const Nav = () => {
           {links.map((link) => (
             <Link
               to={link.href}
+              key={link.id}
               className="font-medium text-5.5 font-poppins text-black"
             >
               {link.title}
@@ -53,28 +54,32 @@ export const Nav = () => {
             SIGN UP
           </button>
         </div>
-        <button onClick={toggleNav} className="flex xl:hidden">
-          {mobileNav ? <GrClose /> : <AiOutlineMenu size={40} />}
+        <button
+          onClick={toggleNav}
+          className="flex xl:hidden z-20 cursor-pointer"
+        >
+          {mobileNav ? (
+            <GrClose color="#fff" size={40} />
+          ) : (
+            <AiOutlineMenu size={40} />
+          )}
         </button>
-        {mobileNav && (
-          <div
-            className={`flex flex-col gap-12 fixed ${
-              mobileNav ? "top-[50px]" : "top-[-120px]"
-            } transition-all duration-300`}
-          >
-            {links.map((link) => (
-              <Link
-                to={link.href}
-                className="font-medium text-6.5 font-poppins text-black"
-              >
-                {link.title}
-              </Link>
-            ))}
-            <button className="px-5 py-3 rounded-[7px] bg-black cursor-pointer mr-2.5 text-white">
-              SIGN UP
-            </button>
-          </div>
-        )}
+        <div
+          className={`fixed bg-black h-1/2 left-0 bottom-0 right-0 rounded-b-3xl ${mobileNav ? "top-0" : "-top-full"} flex flex-col gap-8 items-center justify-center transition-all duration-300`}
+        >
+          {links.map((link) => (
+            <Link
+              to={link.href}
+              key={link.id}
+              className="font-medium text-xl font-poppins text-white"
+            >
+              {link.title}
+            </Link>
+          ))}
+          <button className="px-5 py-3 rounded-[7px] bg-white cursor-pointer mr-2.5 text-black">
+            SIGN UP
+          </button>
+        </div>
       </Container>
     </nav>
   );
