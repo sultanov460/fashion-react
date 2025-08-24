@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "../components/Container";
 import { Logo } from "../assets/icons/Logo";
 import { Link } from "react-router-dom";
@@ -11,6 +11,12 @@ export const Nav = () => {
   function toggleNav() {
     setMobileNav(!mobileNav);
   }
+
+  useEffect(() => {
+    window.addEventListener("click", () => {
+      setMobileNav(false);
+    });
+  });
 
   const links = [
     {
@@ -40,32 +46,37 @@ export const Nav = () => {
         <Link to={"/"}>
           <Logo />
         </Link>
-        <div className="hidden xl:flex  gap-15 items-center">
-          {links.map((link) => (
-            <Link
-              to={link.href}
-              key={link.id}
-              className="font-medium text-5.5 font-poppins text-black"
-            >
-              {link.title}
-            </Link>
-          ))}
-          <button className="px-5 py-3 rounded-[7px] bg-black cursor-pointer mr-2.5 text-white">
+        <div className="flex items-center gap-8">
+          <div className="hidden xl:flex gap-15 items-center ">
+            {links.map((link) => (
+              <Link
+                to={link.href}
+                key={link.id}
+                className="font-medium text-5.5 font-poppins text-black"
+              >
+                {link.title}
+              </Link>
+            ))}
+          </div>
+          <button className="hidden px-5 py-3 rounded-[7px] bg-black cursor-pointer mr-2.5 text-white md:block">
             SIGN UP
           </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleNav();
+            }}
+            className="flex xl:hidden z-20 cursor-pointer"
+          >
+            {mobileNav ? <GrClose size={40} /> : <AiOutlineMenu size={40} />}
+          </button>
         </div>
-        <button
-          onClick={toggleNav}
-          className="flex xl:hidden z-20 cursor-pointer"
-        >
-          {mobileNav ? (
-            <GrClose color="#fff" size={40} />
-          ) : (
-            <AiOutlineMenu size={40} />
-          )}
-        </button>
         <div
-          className={`fixed bg-black h-1/2 left-0 bottom-0 right-0 rounded-b-3xl ${mobileNav ? "top-0" : "-top-full"} flex flex-col gap-8 items-center justify-center transition-all duration-300`}
+          onClick={(e) => e.stopPropagation()}
+          className={`fixed bg-black h-full w-[70%] right-0 bottom-0 top-0  ${
+            mobileNav ? "left-0" : "-left-full"
+          } flex flex-col gap-8 items-center justify-center transition-all duration-300`}
         >
           {links.map((link) => (
             <Link
@@ -76,7 +87,7 @@ export const Nav = () => {
               {link.title}
             </Link>
           ))}
-          <button className="px-5 py-3 rounded-[7px] bg-white cursor-pointer mr-2.5 text-black">
+          <button className="block px-5 py-3 rounded-[7px] bg-white cursor-pointer mr-2.5 text-black md:hidden">
             SIGN UP
           </button>
         </div>
